@@ -1,0 +1,23 @@
+Demo Output : 
+
+You typed:      to be or not to
+Autocorrected:  to be or not to
+Next word tips: [('be', 0.19), ('the', 0.04), ('have', 0.03)]
+-------------------------------------------------------
+You typed:      I love
+Autocorrected:  I love
+Next word tips: [('thee', 0.24), ('you', 0.13), ('him', 0.09)]
+-------------------------------------------------------
+You typed:      romeo and
+Autocorrected:  romeo and
+Next word tips: [('juliet', 0.29), ('a', 0.29), ('good', 0.14)]
+-------------------------------------------------------
+You typed:      i want to lern
+Autocorrected:  i want to learn
+Next word tips: [('and', 0.17), ('countess', 0.08), ('what', 0.08)]
+
+
+Testing Output : 
+
+receive this message and please check if ur keyboard autocorrect fix these 
+spelling mistake correctly, especially the weird ones like 'the' and 'with'

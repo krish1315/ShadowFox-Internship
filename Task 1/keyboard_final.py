@@ -2,22 +2,26 @@ import re
 from collections import defaultdict, Counter
 from spellchecker import SpellChecker
 
-CORPUS = """
+CORPUS_FILE = "corpus.txt"   # large real-world training file (e.g. auto_correct.txt)
+
+
+def load_corpus(path, fallback_text=""):
+    try:
+        with open(path, "r", encoding="utf-8", errors="ignore") as f:
+            return f.read()
+    except FileNotFoundError:
+        return fallback_text
+
+
+# Small fallback corpus used only if CORPUS_FILE is missing, so the script never crashes.
+FALLBACK_CORPUS = """
 I love to play cricket in the evening with my friends.
-I love to play football in the morning with my brother.
-She loves to read books in the evening after dinner.
-He loves to read newspapers in the morning before breakfast.
 I want to learn how to code in python every day.
-I want to learn how to cook new recipes on weekends.
 The weather is very nice today and I want to go for a walk.
-The weather is very cold today and I want to stay at home.
 Machine learning is a fascinating field of computer science.
-Deep learning is a subfield of machine learning that uses neural networks.
-Natural language processing helps computers understand human language.
-I am learning natural language processing this semester.
-Please remember to bring your book to the class tomorrow.
-Please remember to submit your assignment before the deadline.
 """
+
+CORPUS = load_corpus(CORPUS_FILE, FALLBACK_CORPUS)
 
 
 def clean_text(text):
@@ -82,7 +86,7 @@ class SpellAutocorrector:
             self.spell.word_frequency.load_words(extra_vocab)
 
     def correct_word(self, word):
-        core = re.sub(r"[^A-Za-z']", "", word)
+        core = re.sub(r"[^A-Za-z']", "", word).strip("'\"")
         if not core:
             return word
         if core.lower() not in self.spell.unknown([core]):
@@ -110,10 +114,10 @@ if __name__ == "__main__":
     keyboard = SmartKeyboard(CORPUS)
 
     test_inputs = [
-        "I love to",
-        "I want to lern",
-        "Machin lerning is",
-        "The weather is very",
+        "to be or not to",
+        "I love",
+        "romeo and",
+        "i want to lern",
     ]
 
     for typed in test_inputs:
