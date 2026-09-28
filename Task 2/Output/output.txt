@@ -1,0 +1,690 @@
+================================================================================
+STEP 2: LOAD DATASET
+================================================================================  
+Dataset loaded successfully: Sample - Superstore.csv
+Shape: 9,994 rows x 21 columns
+
+================================================================================  
+STEP 3: DATASET OVERVIEW
+================================================================================  
+
+Column Names (21 columns):
+  - Row ID
+  - Order ID
+  - Order Date
+  - Ship Date
+  - Ship Mode
+  - Customer ID
+  - Customer Name
+  - Segment
+  - Country
+  - City
+  - State
+  - Postal Code
+  - Region
+  - Product ID
+  - Category
+  - Sub-Category
+  - Product Name
+  - Sales
+  - Quantity
+  - Discount
+  - Profit
+
+First 5 rows:
+   Row ID        Order ID  Order Date  ... Quantity Discount    Profit
+0       1  CA-2016-152156   11/8/2016  ...        2     0.00   41.9136
+1       2  CA-2016-152156   11/8/2016  ...        3     0.00  219.5820
+2       3  CA-2016-138688   6/12/2016  ...        2     0.00    6.8714
+3       4  US-2015-108966  10/11/2015  ...        5     0.45 -383.0310
+4       5  US-2015-108966  10/11/2015  ...        2     0.20    2.5164
+
+[5 rows x 21 columns]
+
+Last 5 rows:
+      Row ID        Order ID Order Date  ... Quantity Discount   Profit
+9989    9990  CA-2014-110422  1/21/2014  ...        3      0.2   4.1028
+9990    9991  CA-2017-121258  2/26/2017  ...        2      0.0  15.6332
+9991    9992  CA-2017-121258  2/26/2017  ...        2      0.2  19.3932
+9992    9993  CA-2017-121258  2/26/2017  ...        4      0.0  13.3200
+9993    9994  CA-2017-119914   5/4/2017  ...        2      0.0  72.9480
+
+[5 rows x 21 columns]
+
+================================================================================  
+STEP 4: DATA INSPECTION
+================================================================================  
+
+Data Types:
+Row ID             int64
+Order ID             str
+Order Date           str
+Ship Date            str
+Ship Mode            str
+Customer ID          str
+Customer Name        str
+Segment              str
+Country              str
+City                 str
+State                str
+Postal Code        int64
+Region               str
+Product ID           str
+Category             str
+Sub-Category         str
+Product Name         str
+Sales            float64
+Quantity           int64
+Discount         float64
+Profit           float64
+dtype: object
+
+Sample values for key columns:
+Order Date sample: 11/8/2016
+Segment values: <ArrowStringArray>
+['Consumer', 'Corporate', 'Home Office']
+Length: 3, dtype: str
+Category values: <ArrowStringArray>
+['Furniture', 'Office Supplies', 'Technology']
+Length: 3, dtype: str
+Sub-Category values: <ArrowStringArray>
+[  'Bookcases',      'Chairs',      'Labels',      'Tables',     'Storage',       
+ 'Furnishings',         'Art',      'Phones',     'Binders',  'Appliances',       
+       'Paper', 'Accessories',   'Envelopes',   'Fasteners',    'Supplies',       
+    'Machines',     'Copiers']
+Length: 17, dtype: str
+Region values: <ArrowStringArray>
+['South', 'West', 'Central', 'East']
+Length: 4, dtype: str
+
+================================================================================  
+STEP 5: DATA CLEANING
+================================================================================  
+Original dataset: 9,994 rows
+
+Duplicate rows found: 0
+Action: No duplicates found - no action needed
+
+Missing values per column:
+Total missing values: 0
+Action: No missing values found - no action needed
+
+Empty string check:
+  - Order ID: No empty values
+  - Customer ID: No empty values
+  - Customer Name: No empty values
+  - City: No empty values
+  - State: No empty values
+  - Product ID: No empty values
+  - Product Name: No empty values
+
+Date conversion:
+  - Converted 'Order Date' to datetime
+  - Converted 'Ship Date' to datetime
+
+Numerical validation:
+  - Sales: Min=0.44, Max=22638.48
+  - Profit: Min=-6599.98, Max=8399.98
+  - Quantity: Min=1, Max=14
+  - Discount: Min=0.0, Max=0.8
+  - All discount values are valid (0-1 range)
+
+Final dataset: 9,994 rows
+
+================================================================================  
+STEP 6: MISSING VALUE & OUTLIER ANALYSIS
+================================================================================  
+Total missing values in dataset: 0
+Dataset is complete - no missing values to handle
+
+--- Outlier Detection (IQR Method) ---
+Sales Outliers (Bounds: [-271.71, 498.93]): 1,167 rows (11.7%)
+Profit Outliers (Bounds: [-39.72, 70.82]): 1,881 rows (18.8%)
+Note: Outliers represent high-value enterprise sales and extreme discount losses; retained for full analysis.
+
+================================================================================  
+STEP 7: DUPLICATE ANALYSIS & EFFICIENCY METRICS
+================================================================================  
+Duplicate rows in dataset: 0
+Dataset is clean - no duplicate rows
+
+================================================================================  
+STEP 8: DESCRIPTIVE STATISTICS
+================================================================================  
+
+Numerical columns descriptive statistics:
+              Sales     Quantity     Discount       Profit
+count   9994.000000  9994.000000  9994.000000  9994.000000
+mean     229.858001     3.789574     0.156203    28.656896
+std      623.245101     2.225110     0.206452   234.260108
+min        0.444000     1.000000     0.000000 -6599.978000
+25%       17.280000     2.000000     0.000000     1.728750
+50%       54.490000     3.000000     0.200000     8.666500
+75%      209.940000     5.000000     0.200000    29.364000
+max    22638.480000    14.000000     0.800000  8399.976000
+
+Profit by Category:
+                 Total Profit  Avg Profit  Num Orders
+Category
+Furniture          18451.2728    8.699327        2121
+Office Supplies   122490.8008   20.327050        6026
+Technology        145454.9481   78.752002        1847
+
+Sales by Region:
+         Total Sales   Avg Sales
+Region
+Central  501239.8908  215.772661
+East     678781.2400  238.336110
+South    391721.9050  241.803645
+West     725457.8245  226.493233
+
+================================================================================  
+STEP 9: SALES ANALYSIS
+================================================================================  
+
+--- Basic Sales Metrics ---
+Total Sales: $2,297,200.86
+Average Sales: $229.86
+Median Sales: $54.49
+Min Sales: $0.44
+Max Sales: $22,638.48
+Std Dev: $623.25
+
+Number of Order Lines: 9,994
+Number of Unique Orders: 5,009
+
+--- Sales by Category ---
+  Technology: $836,154.03 (36.4%)
+  Furniture: $741,999.80 (32.3%)
+  Office Supplies: $719,047.03 (31.3%)
+
+Highest-selling category: Technology ($836,154.03)
+Lowest-selling category: Office Supplies ($719,047.03)
+
+--- Sales by Sub-Category ---
+  Phones: $330,007.05 (14.4%)
+  Chairs: $328,449.10 (14.3%)
+  Storage: $223,843.61 (9.7%)
+  Tables: $206,965.53 (9.0%)
+  Binders: $203,412.73 (8.9%)
+  Machines: $189,238.63 (8.2%)
+  Accessories: $167,380.32 (7.3%)
+  Copiers: $149,528.03 (6.5%)
+  Bookcases: $114,880.00 (5.0%)
+  Appliances: $107,532.16 (4.7%)
+  Furnishings: $91,705.16 (4.0%)
+  Paper: $78,479.21 (3.4%)
+  Supplies: $46,673.54 (2.0%)
+  Art: $27,118.79 (1.2%)
+  Envelopes: $16,476.40 (0.7%)
+  Labels: $12,486.31 (0.5%)
+  Fasteners: $3,024.28 (0.1%)
+
+--- Top 5 Products by Sales ---
+  Technology - Phones: $330,007.05
+  Furniture - Chairs: $328,449.10
+  Office Supplies - Storage: $223,843.61
+  Furniture - Tables: $206,965.53
+  Office Supplies - Binders: $203,412.73
+
+--- Bottom 5 Products by Sales ---
+  Office Supplies - Fasteners: $3,024.28
+  Office Supplies - Labels: $12,486.31
+  Office Supplies - Envelopes: $16,476.40
+  Office Supplies - Art: $27,118.79
+  Office Supplies - Supplies: $46,673.54
+
+--- Sales by Region ---
+  West: $725,457.82 (31.6%)
+  East: $678,781.24 (29.5%)
+  Central: $501,239.89 (21.8%)
+  South: $391,721.91 (17.1%)
+
+Best-performing region: West ($725,457.82)
+Weak-performing region: South ($391,721.91)
+
+--- Sales by Customer Segment ---
+  Consumer: $1,161,401.34 (50.6%)
+  Corporate: $706,146.37 (30.7%)
+  Home Office: $429,653.15 (18.7%)
+
+--- Sales Over Time ---
+First 6 months of sales data:
+  2014-01: $14,236.90
+  2014-02: $4,519.89
+  2014-03: $55,691.01
+  2014-04: $28,295.35
+  2014-05: $23,648.29
+  2014-06: $34,595.13
+
+Peak sales month: 2017-11 ($118,447.82)
+Lowest sales month: 2014-02 ($4,519.89)
+
+================================================================================  
+STEP 10: PROFIT ANALYSIS
+================================================================================  
+
+--- Basic Profit Metrics ---
+Total Profit: $286,397.02
+Average Profit: $28.66
+Median Profit: $8.67
+Min Profit: $-6,599.98 (loss)
+Max Profit: $8,399.98
+
+Overall Profit Margin: 12.47%
+
+--- Profit by Category ---
+  Technology: $145,454.95 total, $78.75 avg, Margin: 17.4% (1847 orders)
+  Office Supplies: $122,490.80 total, $20.33 avg, Margin: 17.0% (6026 orders)
+  Furniture: $18,451.27 total, $8.70 avg, Margin: 2.5% (2121 orders)
+
+--- Profit by Sub-Category ---
+  Copiers: $55,617.82 (Margin: 37.2%)
+  Phones: $44,515.73 (Margin: 13.5%)
+  Accessories: $41,936.64 (Margin: 25.1%)
+  Paper: $34,053.57 (Margin: 43.4%)
+  Binders: $30,221.76 (Margin: 14.9%)
+  Chairs: $26,590.17 (Margin: 8.1%)
+  Storage: $21,278.83 (Margin: 9.5%)
+  Appliances: $18,138.01 (Margin: 16.9%)
+  Furnishings: $13,059.14 (Margin: 14.2%)
+  Envelopes: $6,964.18 (Margin: 42.3%)
+  Art: $6,527.79 (Margin: 24.1%)
+  Labels: $5,546.25 (Margin: 44.4%)
+  Machines: $3,384.76 (Margin: 1.8%)
+  Fasteners: $949.52 (Margin: 31.4%)
+  Supplies: $-1,189.10 (Margin: -2.5%)
+  Bookcases: $-3,472.56 (Margin: -3.0%)
+  Tables: $-17,725.48 (Margin: -8.6%)
+
+Most profitable sub-category: Copiers ($55,617.82)
+Least profitable sub-category: Tables ($-17,725.48)
+
+--- Profit by Region ---
+  West: $108,418.45 (Margin: 14.9%)
+  East: $91,522.78 (Margin: 13.5%)
+  South: $46,749.43 (Margin: 11.9%)
+  Central: $39,706.36 (Margin: 7.9%)
+
+--- Profit by Customer Segment ---
+  Consumer: $134,119.21 (Margin: 11.5%)
+  Corporate: $91,979.13 (Margin: 13.0%)
+  Home Office: $60,298.68 (Margin: 14.0%)
+
+--- Products with Negative Profit (Losses) ---
+Number of orders with negative profit: 1,871
+Total loss from negative profit: $156,131.29
+
+Top 5 contributors to losses:
+  Binders: $38,510.50 loss
+  Tables: $32,412.15 loss
+  Machines: $30,118.67 loss
+  Bookcases: $12,152.21 loss
+  Chairs: $9,880.84 loss
+
+================================================================================  
+STEP 11: PRODUCT/CATEGORY ANALYSIS
+================================================================================  
+
+--- Top 10 Products by Sales ---
+  Canon imageCLASS 2200 Advanced Copier...: $61,599.82
+  Fellowes PB500 Electric Punch Plastic Comb Binding...: $27,453.38
+  Cisco TelePresence System EX90 Videoconferencing U...: $22,638.48
+  HON 5400 Series Task Chairs for Big and Tall...: $21,870.58
+  GBC DocuBind TL300 Electric Binding System...: $19,823.48
+  GBC Ibimaster 500 Manual ProClick Binding System...: $19,024.50
+  Hewlett Packard LaserJet 3310 Copier...: $18,839.69
+  HP Designjet T520 Inkjet Large Format Printer - 24...: $18,374.90
+  GBC DocuBind P400 Electric Binding System...: $17,965.07
+  High Speed Automatic Electric Letter Opener...: $17,030.31
+
+--- Top 10 Products by Profit ---
+  Canon imageCLASS 2200 Advanced Copier...: $25,199.93
+  Fellowes PB500 Electric Punch Plastic Comb Binding...: $7,753.04
+  Hewlett Packard LaserJet 3310 Copier...: $6,983.88
+  Canon PC1060 Personal Laser Copier...: $4,570.93
+  HP Designjet T520 Inkjet Large Format Printer - 24...: $4,094.98
+  Ativa V4110MDD Micro-Cut Shredder...: $3,772.95
+  3D Systems Cube Printer, 2nd Generation, Magenta...: $3,717.97
+  Plantronics Savi W720 Multi-Device Wireless Headse...: $3,696.28
+  Ibico EPK-21 Electric Binding System...: $3,345.28
+  Zebra ZM400 Thermal Label Printer...: $3,343.54
+
+--- Category Performance Summary ---
+
+Furniture:
+  Total Sales: $741,999.80
+  Total Profit: $18,451.27
+  Profit Margin: 2.5%
+  Number of Orders: 2121
+  Average Sales per Order: $349.83
+  Average Profit per Order: $8.70
+
+Office Supplies:
+  Total Sales: $719,047.03
+  Total Profit: $122,490.80
+  Profit Margin: 17.0%
+  Number of Orders: 6026
+  Average Sales per Order: $119.32
+  Average Profit per Order: $20.33
+
+Technology:
+  Total Sales: $836,154.03
+  Total Profit: $145,454.95
+  Profit Margin: 17.4%
+  Number of Orders: 1847
+  Average Sales per Order: $452.71
+  Average Profit per Order: $78.75
+
+================================================================================  
+STEP 12: REGIONAL ANALYSIS
+================================================================================  
+
+--- Regional Performance Summary ---
+
+South:
+  Total Sales: $391,721.91
+  Total Profit: $46,749.43
+  Profit Margin: 11.9%
+  Number of Orders: 1620
+  Number of Unique Customers: 512
+  Avg Sales per Customer: $765.08
+
+West:
+  Total Sales: $725,457.82
+  Total Profit: $108,418.45
+  Profit Margin: 14.9%
+  Number of Orders: 3203
+  Number of Unique Customers: 686
+  Avg Sales per Customer: $1,057.52
+
+Central:
+  Total Sales: $501,239.89
+  Total Profit: $39,706.36
+  Profit Margin: 7.9%
+  Number of Orders: 2323
+  Number of Unique Customers: 629
+  Avg Sales per Customer: $796.88
+
+East:
+  Total Sales: $678,781.24
+  Total Profit: $91,522.78
+  Profit Margin: 13.5%
+  Number of Orders: 2848
+  Number of Unique Customers: 674
+  Avg Sales per Customer: $1,007.09
+
+================================================================================  
+STEP 13: CUSTOMER/SEGMENT ANALYSIS
+================================================================================  
+
+--- Customer Segment Performance ---
+
+Consumer:
+  Total Sales: $1,161,401.34
+  Total Profit: $134,119.21
+  Profit Margin: 11.5%
+  Number of Orders: 5191
+  Number of Unique Customers: 409
+  Avg Sales per Order: $223.73
+
+Corporate:
+  Total Sales: $706,146.37
+  Total Profit: $91,979.13
+  Profit Margin: 13.0%
+  Number of Orders: 3020
+  Number of Unique Customers: 236
+  Avg Sales per Order: $233.82
+
+Home Office:
+  Total Sales: $429,653.15
+  Total Profit: $60,298.68
+  Profit Margin: 14.0%
+  Number of Orders: 1783
+  Number of Unique Customers: 148
+  Avg Sales per Order: $240.97
+
+--- Top 10 Customers by Total Purchase ---
+  Sean Miller (SM-20320): $25,043.05
+  Tamara Chand (TC-20980): $19,052.22
+  Raymond Buch (RB-19360): $15,117.34
+  Tom Ashbrook (TA-21385): $14,595.62
+  Adrian Barton (AB-10105): $14,473.57
+  Ken Lonsdale (KL-16645): $14,175.23
+  Sanjit Chand (SC-20095): $14,142.33
+  Hunter Lopez (HL-15040): $12,873.30
+  Sanjit Engle (SE-20110): $12,209.44
+  Christopher Conant (CC-12370): $12,129.07
+
+================================================================================  
+STEP 14: TIME-SERIES ANALYSIS
+================================================================================  
+
+--- Sales by Year ---
+  2014: $484,247.50
+  2015: $470,532.51
+  2016: $609,205.60
+  2017: $733,215.26
+
+--- Sales by Quarter ---
+  2014Q1: $74,447.80
+  2014Q2: $86,538.76
+  2014Q3: $143,633.21
+  2014Q4: $179,627.73
+  2015Q1: $68,851.74
+  2015Q2: $89,124.19
+  2015Q3: $130,259.58
+  2015Q4: $182,297.01
+  2016Q1: $93,237.18
+  2016Q2: $136,082.30
+  2016Q3: $143,787.36
+  2016Q4: $236,098.75
+  2017Q1: $123,144.86
+  2017Q2: $133,764.37
+  2017Q3: $196,251.96
+  2017Q4: $280,054.07
+
+--- Profit by Year ---
+  2014: $49,543.97
+  2015: $61,618.60
+  2016: $81,795.17
+  2017: $93,439.27
+
+================================================================================  
+STEP 15: DISCOUNT ANALYSIS
+================================================================================  
+
+--- Discount Statistics ---
+  Mean Discount: 15.6%
+  Median Discount: 20.0%
+  Min Discount: 0.0%
+  Max Discount: 80.0%
+  Std Dev: 20.6%
+
+--- Discount Distribution ---
+  0-10%: 4,892 orders (48.9%)
+  10-20%: 3,709 orders (37.1%)
+  20-30%: 227 orders (2.3%)
+  30-40%: 233 orders (2.3%)
+  40-50%: 77 orders (0.8%)
+  50-60%: 138 orders (1.4%)
+  60-70%: 418 orders (4.2%)
+  70-80%: 300 orders (3.0%)
+
+--- Profit by Discount Level ---
+  0-10%: Total $330,016.78, Avg $67.46
+  10-20%: Total $91,756.30, Avg $24.74
+  20-30%: Total $-10,369.28, Avg $-45.68
+  30-40%: Total $-25,448.19, Avg $-109.22
+  40-50%: Total $-22,999.54, Avg $-298.70
+  50-60%: Total $-5,944.66, Avg $-43.08
+  60-70%: Total $-40,075.36, Avg $-95.87
+  70-80%: Total $-30,539.04, Avg $-101.80
+
+================================================================================  
+STEP 16: QUANTITY ANALYSIS
+================================================================================  
+
+--- Quantity Statistics ---
+  Mean Quantity: 3.79
+  Median Quantity: 3
+  Min Quantity: 1
+  Max Quantity: 14
+  Std Dev: 2.23
+
+--- Orders by Quantity ---
+  1 items: 899 orders
+  2 items: 2,402 orders
+  3 items: 2,409 orders
+  4 items: 1,191 orders
+  5 items: 1,230 orders
+  6 items: 572 orders
+  7 items: 606 orders
+  8 items: 257 orders
+  9 items: 258 orders
+  10 items: 57 orders
+  11 items: 34 orders
+  12 items: 23 orders
+  13 items: 27 orders
+  14 items: 29 orders
+
+================================================================================  
+STEP 17: CORRELATION ANALYSIS
+================================================================================  
+
+--- Correlation Matrix ---
+             Sales  Quantity  Discount    Profit
+Sales     1.000000  0.200795 -0.028190  0.479064
+Quantity  0.200795  1.000000  0.008623  0.066253
+Discount -0.028190  0.008623  1.000000 -0.219487
+Profit    0.479064  0.066253 -0.219487  1.000000
+
+--- Key Correlations ---
+  Sales vs Profit: 0.4791
+  Sales vs Quantity: 0.2008
+  Sales vs Discount: -0.0282
+  Profit vs Discount: -0.2195
+
+================================================================================  
+STEP 18: DATA VISUALIZATION
+================================================================================  
+Creating visualizations...
+Saved: sales_profit_analysis_charts.png
+Saved: profit_analysis_charts.png
+
+================================================================================  
+STEP 19: KEY FINDINGS
+================================================================================  
+
+KEY FINDINGS:
+
+1. FINANCIAL PERFORMANCE
+   - Total Sales: $2,297,200.86
+   - Total Profit: $286,397.02
+   - Overall Profit Margin: 12.47%
+   - Total Orders Analyzed: 9,994
+
+2. CATEGORY PERFORMANCE
+   - Best performing category by sales: Technology
+   - Category with highest profit margin: Technology
+   - Category with lowest sales: Office Supplies
+
+3. REGIONAL PERFORMANCE
+   - Best performing region: West
+   - Weakest performing region: South
+
+4. CUSTOMER SEGMENT PERFORMANCE
+   - Most profitable segment: Consumer
+   - Sales distribution by segment shows Consumer segment leading
+
+5. PRODUCT INSIGHTS
+   - Highest selling product category: Technology
+   - Most profitable sub-category: Copiers
+
+6. DISCOUNT IMPACT
+   - Average discount: 15.6%
+   - High discount items contribute to losses
+
+7. TIME PERFORMANCE
+   - Peak sales period: 2017-11
+   - Consistent revenue generation throughout the year
+
+
+================================================================================  
+STEP 20: BUSINESS RECOMMENDATIONS
+================================================================================  
+
+BUSINESS RECOMMENDATIONS:
+
+1. CATEGORY STRATEGY
+   - Focus on expanding Technology category which generates highest sales volume. 
+   - Review pricing strategy for Furniture to improve profit margins.
+   - Consider discontinuing or repricing products in categories with below-average margins.
+
+2. REGIONAL OPTIMIZATION
+   - Strengthen presence in West region which shows strong sales.
+   - Investigate opportunities in South to improve underperformance.
+   - Consider targeted marketing campaigns in weaker regions.
+
+3. CUSTOMER SEGMENT STRATEGY
+   - Prioritize Consumer segment which contributes most to profits.
+   - Develop retention programs for high-value customers.
+   - Evaluate marketing spend allocation across segments.
+
+4. PRODUCT PORTFOLIO
+   - Stock up on high-demand products from Technology category.
+   - Review pricing of high-volume low-margin products.
+   - Consider bundling slow-moving items with popular products.
+
+5. DISCOUNT AND PROMOTION STRATEGY
+   - Optimize discount levels - current average is 15.6%.
+   - Identify and limit discounts that lead to losses.
+   - Implement tiered discount structure based on customer segment.
+
+6. INVENTORY MANAGEMENT
+   - Improve forecasting for seasonal variations.
+   - Optimize stock levels for categories with high volume turnover.
+   - Reduce inventory holding costs for low-margin categories.
+
+7. OPERATIONAL IMPROVEMENTS
+   - Standardize shipping methods to reduce costs.
+   - Improve supply chain efficiency for high-cost items.
+   - Consider cost reduction initiatives in underperforming regions.
+
+
+================================================================================  
+STEP 21: CONCLUSION
+================================================================================  
+
+CONCLUSION:
+
+The Superstore retail analysis reveals a POSITIVE overall business performance    
+with $2,297,200.86 in total sales across 9,994 transactions.
+
+The Technology category drives the majority of sales ($836,154.03), while the Consumer segment
+accounted for the highest profit contribution.
+
+Regionally, West shows the strongest performance, indicating healthy market       
+penetration, while South requires strategic attention.
+
+Key Areas for Improvement:
+1. Improve profit margins in Furniture category (2.5%) and Tables/Bookcases sub-categories
+2. Develop targeted strategies for Central and South regions for better profitability
+3. Optimize discount programs (discounts >20% consistently drive losses)
+4. Focus on high-value customer segments for retention (Home Office has best margins)
+
+The analysis provides a foundation for data-driven decision making to enhance     
+both top-line growth and bottom-line profitability.
+
+
+================================================================================  
+ANALYSIS COMPLETE
+================================================================================  
+Charts saved: sales_profit_analysis_charts.png, profit_analysis_charts.png        
+Interactive Plotly Dashboard successfully created: interactive_sales_profit_dashboard.html
+Dataframe columns retained for further analysis: ['Row ID', 'Order ID', 'Order Date', 'Ship Date',
+                                                  'Ship Mode', 'Customer ID', 'Customer Name', 'Segment',
+                                                  'Country', 'City', 'State', 'Postal Code', 'Region', 
+                                                  'Product ID', 'Category', 'Sub-Category', 'Product Name',
+                                                  'Sales', 'Quantity', 'Discount', 'Profit', 'Sales_to_Profit_Ratio',
+                                                  'Profit_Margin_%', 'Order_Month', 'Year', 'Order_Quarter', 'Discount_Category']
