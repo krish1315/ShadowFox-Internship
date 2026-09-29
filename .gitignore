@@ -9,3 +9,17 @@ __pycache__/
 .idea/
 .vscode/
 *.log
+
+# Virtual environments (DO NOT COMMIT)
+.venv/
+.venv*/
+venv/
+env/
+
+# Jupyter artifacts
+.ipynb_checkpoints/
+.nbconvert.ipynb.bak
+
+# HuggingFace cache
+.hf_home/
+.cache/
